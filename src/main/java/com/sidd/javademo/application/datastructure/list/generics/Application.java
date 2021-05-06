@@ -9,7 +9,10 @@ public class Application {
         people.insert(new Person(39, "Sidd"));
 
         people.traverse();
-        people.remove(p);
+        //people.remove(p);
+        //people.traverse();
+        System.out.println("Middle Node :"+ people.getMiddleNode());
+        people.reverse();
         people.traverse();
     }
 }

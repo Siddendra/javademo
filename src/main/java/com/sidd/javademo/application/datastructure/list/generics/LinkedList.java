@@ -2,14 +2,43 @@ package com.sidd.javademo.application.datastructure.list.generics;
 
 public class LinkedList<T extends Comparable<T>> implements List<T>{
 
-    private Node<T> root;
+    private Node<T> head;
     private int numberOfItems;
+
+    //Finding the Middle Node in a linked list overview
+    @Override
+    public Node<T> getMiddleNode() {
+        Node<T> fastPointer = this.head;
+        Node<T> slowPointer = this.head;
+        while (fastPointer.getNextNode() != null && fastPointer.getNextNode().getNextNode() != null) {
+            fastPointer = fastPointer.getNextNode().getNextNode();
+            slowPointer = slowPointer.getNextNode();
+        }
+        return slowPointer;
+    }
+
+    //Reverse a Linked List in-place overview
+    @Override
+    public void reverse() {
+        Node<T> currentNode = this.head;
+        Node<T> previousNode = null;
+        Node<T> nextNode = null;
+
+        while (currentNode != null) {
+            nextNode = currentNode.getNextNode();
+            currentNode.setNextNode(previousNode);
+            previousNode = currentNode;
+            currentNode = nextNode;
+        }
+
+        this.head =previousNode;
+    }
 
     @Override
     public void insert(T data) {
-        if(root == null) {
+        if(head == null) {
             //This is the first item in the linked list
-            root = new Node<>(data);
+            head = new Node<>(data);
         } else {
             insertBeginning(data);
         }
@@ -17,8 +46,8 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 
     private void insertBeginning(T data) {
         Node<T> newNode = new Node<>(data);
-        newNode.setNextNode(root);
-        root = newNode;
+        newNode.setNextNode(head);
+        head = newNode;
     }
 
     //Because we have to start with the root node
@@ -37,12 +66,12 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 
     @Override
     public void remove(T data) {
-        if(root == null) return;
+        if(head == null) return;
         //We want to remove the first node
-        if(root.getData().compareTo(data) == 0) {
-            root = root.getNextNode();
+        if(head.getData().compareTo(data) == 0) {
+            head = head.getNextNode();
         } else {
-            remove(data, root, root.getNextNode());
+            remove(data, head, head.getNextNode());
         }
 
     }
@@ -65,8 +94,8 @@ public class LinkedList<T extends Comparable<T>> implements List<T>{
 
     @Override
     public void traverse() {
-       if(root == null) return;
-       Node<T>  actualNode =root;
+       if(head == null) return;
+       Node<T>  actualNode =head;
        while (actualNode != null) {
            System.out.println(actualNode);
            actualNode = actualNode.getNextNode();
